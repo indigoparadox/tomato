@@ -6,7 +6,8 @@ include ../common.mak
 CFLAGS = -Os -Wall $(EXTRACFLAGS)
 
 all:
-	$(CC) chown.c -o chown $(CFLAGS)
+	$(CC) chown.c util.c -o chown $(CFLAGS)
+	$(CC) chgrp.c util.c -o chgrp $(CFLAGS)
 
 clean:
 	rm -rf *.o *.core $(PROG) *.obj *.so $(PROG).txt *.dSYM *.tgz
