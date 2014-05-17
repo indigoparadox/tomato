@@ -519,7 +519,7 @@ static void cry(struct mg_connection *conn, const char *fmt, ...) {
       mg_fopen(conn->ctx->config[ERROR_LOG_FILE], "a+");
 
     if (fp != NULL) {
-      flockfile(fp);
+      /* flockfile(fp); */
       timestamp = time(NULL);
 
       (void) fprintf(fp,
@@ -535,7 +535,7 @@ static void cry(struct mg_connection *conn, const char *fmt, ...) {
 
       (void) fprintf(fp, "%s", buf);
       fputc('\n', fp);
-      funlockfile(fp);
+      /* funlockfile(fp); */
       if (fp != stderr) {
         fclose(fp);
       }
@@ -3407,7 +3407,7 @@ static void log_access(const struct mg_connection *conn) {
 
   ri = &conn->request_info;
 
-  flockfile(fp);
+  /* flockfile(fp); */
 
   (void) fprintf(fp,
       "%s - %s [%s] \"%s %s HTTP/%s\" %d %" INT64_FMT,
@@ -3423,7 +3423,7 @@ static void log_access(const struct mg_connection *conn) {
   (void) fputc('\n', fp);
   (void) fflush(fp);
 
-  funlockfile(fp);
+  /* funlockfile(fp); */
   (void) fclose(fp);
 }
 
@@ -3731,7 +3731,7 @@ static int parse_url(const char *url, char *host, int *port) {
 static void handle_proxy_request(struct mg_connection *conn) {
   struct mg_request_info *ri = &conn->request_info;
   char host[1025], buf[BUFSIZ];
-  int port, is_ssl, len, i, n;
+  int port, is_ssl, len = 0, i, n;
 
   DEBUG_TRACE(("URL: %s", ri->uri));
   if (conn->request_info.uri[0] == '/' ||
